@@ -28,10 +28,16 @@ public class Student extends Human {
 
   public Student(String name, ArrayList<String> classes, double gpa, String gender) {
     super(name);
-    this.name = name;
-    this.classes = classes;
-    this.gpa = gpa;
-    this.gender = gender;
+    throwIllegalArgumentExceptionIfNumber(name);
+  }
+
+  private void throwIllegalArgumentExceptionIfNumber(String string) {
+    try {
+      Integer.parseInt(string);
+      throw new IllegalArgumentException("Name cannot be a number");
+    } catch (NumberFormatException ex){
+      // Name is not a valid number.
+    }
   }
 
   /**                                                                               
@@ -47,7 +53,7 @@ public class Student extends Human {
    * <code>Student</code>.                                                          
    */                                                                               
   public String toString() {
-    throw new UnsupportedOperationException("Not implemented yet");
+    return " \""  + says() + "\"";
   }
 
   /**
