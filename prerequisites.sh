@@ -14,22 +14,6 @@ function getLoginIdFromXmlFile() {
 
 ## Check to see if this script is run on one of the PSU CECS Linux machines
 
-function runningOnPSUMachine() {
-    psuHostname=$(hostname --long 2>&1 | grep "cs.pdx.edu")
-    if [[ -n "$psuHostname" ]]; then
-        echo "You are running on PSU machine: ${psuHostname}"
-    else
-      	return 1
-    fi
-
-    if [[ -r "/u/whitlock/jars/grader.jar" ]]; then
-	echo "grader jar is present"
-    else
-	echo "Could not find the grader jar on ${psuHostname}.  Did Dave forget to make it world-readable again?  Ask him."
-	return 1
-    fi
-}
-
 ## Check to see if the required version of Java is available on the
 ## command line PATH 
 ##
@@ -72,11 +56,6 @@ function createProjectFromArchetype() {
 	projectName=$4
     else 
 	projectName=${archetypeName}
-    fi
-
-    if ! runningOnPSUMachine; then
-        echo "** This script can only be run on a PSU CECS Linux Machine"
-        exit 1
     fi
 
     if ! checkForJava; then
