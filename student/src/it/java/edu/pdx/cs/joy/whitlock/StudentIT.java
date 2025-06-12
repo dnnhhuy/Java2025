@@ -38,4 +38,13 @@ class StudentIT extends InvokeMainTestCase {
       assertThat(result.getTextWrittenToStandardOut(), equalTo(""));
   }
 
+  @Test
+  void invalidGpa() {
+        String[] args = {"Dave", "male", "invalid", "Algorithms", "Operating Systems"};
+        InvokeMainTestCase.MainMethodResult result = invokeMain(Student.class, args);
+
+        assertThat(result.getTextWrittenToStandardError(), equalTo("GPA is not a number"));
+        assertThat(result.getTextWrittenToStandardOut(), equalTo(""));
+    }
+
 }

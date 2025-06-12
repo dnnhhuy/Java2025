@@ -100,7 +100,13 @@ private Double parseGPA(Double gpa) {
     } else {
       String name = args[0];
       String gender = args[1];
-      Double gpa = Double.valueOf(args[2]);
+      double gpa;
+      try {
+         gpa = Double.parseDouble(args[2]);
+      } catch (NumberFormatException ex) {
+        System.err.print("GPA is not a number");
+        return;
+      }
       ArrayList<String> classes = new ArrayList<>();
       for (int i = 3; i < args.length; i++) {
         classes.add(args[i]);
