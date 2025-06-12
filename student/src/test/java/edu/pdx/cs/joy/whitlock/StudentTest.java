@@ -33,10 +33,9 @@ public class StudentTest
   }
 
   private static Student createStudentNamed(String name) {
-    return new Student(name, new ArrayList<>(), 0.0, "Doesn't matter");
+    return new Student(name, new ArrayList<>(), 0.0, "male");
   }
 
-  @Disabled
   @Test
   void daveStudent() {
     ArrayList<String> classes = new ArrayList<>();
@@ -45,7 +44,7 @@ public class StudentTest
     classes.add("Java");
     Student dave = new Student("Dave", classes, 3.64, "male");
 
-    assertThat(dave.toString(), equalTo("Dave has a GPA of 3.64 and is taking 3 classes: Algorithms, Operating Systems, and Java. he says \"This class is too much work\"."));
+    assertThat(dave.toString(), equalTo("Dave has a GPA of 3.64 and is taking 3 classes: Algorithms, Operating Systems, Java. He says \"This class is too much work\"."));
   }
 
   @Test
@@ -59,5 +58,20 @@ public class StudentTest
     IllegalArgumentException exception =
             assertThrows(IllegalArgumentException.class, () -> createStudentNamed("123"));
     assertThat(exception.getMessage(), equalTo("Name cannot be a number"));
+  }
+
+  @Test
+  void genderMustBeMaleFemaleOrOther() {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Student("Name", new ArrayList<String>(), 3.5, "idontknow"));
+    assertThat(exception.getMessage(), equalTo("Gender must be male/female/other"));
+  }
+
+  @Test
+  void invalidGpaThrowsInvalidGpaException() {
+    ArrayList<String> classes = new ArrayList<>();
+    classes.add("Algorithms");
+    classes.add("Operating Systems");
+    classes.add("Java");
+    assertThrows(Student.InvalidGpaException.class, () -> new Student("Dave", classes, -3.4, "male"));
   }
 }

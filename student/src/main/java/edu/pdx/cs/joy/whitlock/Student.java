@@ -26,20 +26,39 @@ public class Student extends Human {
   private double gpa;
   private String gender;
 
-  public Student(String name, ArrayList<String> classes, double gpa, String gender) {
+  public Student(String name, ArrayList<String> classes, Double gpa, String gender) {
     super(name);
-    throwIllegalArgumentExceptionIfNumber(name);
+    this.name = parseName(name);
+    this.classes = classes;
+    this.gpa = parseGPA(gpa);
+    this.gender = parseGender(gender);
   }
 
-  private void throwIllegalArgumentExceptionIfNumber(String string) {
-    try {
-      Integer.parseInt(string);
-      throw new IllegalArgumentException("Name cannot be a number");
-    } catch (NumberFormatException ex){
-      // Name is not a valid number.
+  private String parseGender(String gender) {
+    if (gender.toLowerCase().equals("male") || gender.toLowerCase().equals("female") || gender.toLowerCase().equals("other")) {
+      return gender;
+    } else {
+      System.out.println(gender);
+      throw new IllegalArgumentException("Gender must be male/female/other");
     }
   }
 
+
+  private String parseName(String name) {
+    try {
+      Integer.parseInt(name);
+      throw new IllegalArgumentException("Name cannot be a number");
+    } catch (NumberFormatException ex) {
+    }
+    return name;
+  }
+private Double parseGPA(Double gpa) {
+    if (gpa >= 0.0 && gpa <= 4.0) {
+      return gpa;
+    } else {
+      throw new InvalidGpaException();
+    }
+}
   /**                                                                               
    * All students say "This class is too much work"
    */
@@ -53,7 +72,20 @@ public class Student extends Human {
    * <code>Student</code>.                                                          
    */                                                                               
   public String toString() {
-    return " \""  + says() + "\"";
+    StringBuilder returnString = new StringBuilder();
+    returnString.append(this.name);
+    returnString.append(" has a GPA of ").append(this.gpa);
+    returnString.append(" and is taking ").append(this.classes.size()).append(" classes: ");
+    if (this.classes.size() > 0) {
+      returnString.append(this.classes.get(0));
+      for (int i = 1; i < this.classes.size(); i++) {
+        returnString.append(", ");
+        returnString.append(this.classes.get(i));
+      }
+    }
+    returnString.append(". He says \"").append(says()).append("\".");
+
+    return returnString.toString();
   }
 
   /**
@@ -61,7 +93,29 @@ public class Student extends Human {
    * <code>Student</code>, and prints a description of the student to
    * standard out by invoking its <code>toString</code> method.
    */
+
   public static void main(String[] args) {
-    System.err.println("Missing command line arguments");
+    if (args.length < 4) {
+      System.err.println("Missing command line arguments");
+    } else {
+      String name = args[0];
+      String gender = args[1];
+      Double gpa = Double.valueOf(args[2]);
+      ArrayList<String> classes = new ArrayList<>();
+      for (int i = 3; i < args.length; i++) {
+        classes.add(args[i]);
+      }
+      try {
+        Student student = new Student(name, classes, gpa, gender);
+        System.out.println(student.toString());
+        return;
+      } catch (InvalidGpaException ex) {
+        System.err.print("GPA must be between 0.0 - 4.0");
+        return;
+      }
+    }
+  }
+
+  public static class InvalidGpaException extends RuntimeException{
   }
 }
