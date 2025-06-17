@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <!--
 
-Replace the strings "YourUserId" and "YourGitHubUser" in this file
+Replace the strings "whitlock" and "dnnhhuy" in this file
 accordingly
 
 -->
@@ -11,16 +11,17 @@ accordingly
     <groupId>io.github.davidwhitlock.joy</groupId>
     <version>1.2.2</version>
   </parent>
-  <groupId>edu.pdx.cs.joy.YourUserId</groupId>
+  <groupId>edu.pdx.cs.joy.whitlock</groupId>
   <artifactId>JoyOfCoding</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>JoyOfCodingSummer2025</name>
   <description>Source code written in the Summer 2025 offering of The Joy of Coding</description>
-  <url>http://YourGitHubUserInLowerCase.github.io/JoyOfCodingSummer2025</url>
+  <url>http://dnnhhuyInLowerCase.github.io/JoyOfCodingSummer2025</url>
   <modules>
     <module>koans</module>
     <module>student</module>
+    <module>apptbook</module>
   </modules>
   <inceptionYear>2025</inceptionYear>
   <organization>
@@ -29,7 +30,7 @@ accordingly
   </organization>
   <issueManagement>
     <system>github</system>
-    <url>https://github.com/YourGitHubUser/JoyOfCodingSummer2025/issues</url>
+    <url>https://github.com/dnnhhuy/JoyOfCodingSummer2025/issues</url>
   </issueManagement>
   <licenses>
     <license>
@@ -70,7 +71,7 @@ accordingly
       <plugin>
         <artifactId>maven-site-plugin</artifactId>
         <configuration>
-          <topSiteURL>scm:git:git@github.com:YourGithubUser/JoyOfCodingSummer2025.git</topSiteURL>
+          <topSiteURL>scm:git:git@github.com:dnnhhuy/JoyOfCodingSummer2025.git</topSiteURL>
         </configuration>
       </plugin>
       <plugin>
@@ -85,7 +86,7 @@ accordingly
     </plugins>
   </build>
   <scm>
-    <connection>scm:git:git@github.com:YourGithubUser/JoyOfCodingSummer2025.git</connection>
+    <connection>scm:git:git@github.com:dnnhhuy/JoyOfCodingSummer2025.git</connection>
   </scm>
   <distributionManagement>
     <snapshotRepository>
@@ -95,7 +96,7 @@ accordingly
     <site>
       <id>gh-pages</id>
       <name>GitHub Pages</name>
-      <url>scm:git:git@github.com:YourGithubUser/JoyOfCodingSummer2025.git</url>
+      <url>scm:git:git@github.com:dnnhhuy/JoyOfCodingSummer2025.git</url>
     </site>
   </distributionManagement>
 </project>
