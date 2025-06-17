@@ -17,7 +17,7 @@ accordingly
   <packaging>pom</packaging>
   <name>JoyOfCodingSummer2025</name>
   <description>Source code written in the Summer 2025 offering of The Joy of Coding</description>
-  <url>http://dnnhhuyInLowerCase.github.io/JoyOfCodingSummer2025</url>
+  <url>http://dnnhhuy.github.io/JoyOfCodingSummer2025</url>
   <modules>
     <module>koans</module>
     <module>student</module>
