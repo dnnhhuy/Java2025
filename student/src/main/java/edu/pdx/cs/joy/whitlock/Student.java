@@ -5,10 +5,16 @@ import edu.pdx.cs.joy.lang.Human;
 import java.util.ArrayList;
                                                                                     
 /**                                                                                 
- * This class is represents a <code>Student</code>.                                 
+ * This class represents a <code>Student</code>.
  */                                                                                 
-public class Student extends Human {                                                
-                                                                                    
+public class Student extends Human {
+
+  private ArrayList<String> classes;
+  private double gpa;
+  private String gender;
+
+
+
   /**                                                                               
    * Creates a new <code>Student</code>                                             
    *                                                                                
@@ -22,10 +28,6 @@ public class Student extends Human {
    * @param gender                                                                  
    *        The student's gender ("male", "female", or "other", case insensitive)
    */
-  private ArrayList<String> classes;
-  private double gpa;
-  private String gender;
-
   public Student(String name, ArrayList<String> classes, Double gpa, String gender) {
     super(name);
     this.name = parseName(name);
