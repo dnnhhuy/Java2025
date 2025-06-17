@@ -143,7 +143,7 @@ class Project1IT extends InvokeMainTestCase {
 
   @Test
   void fileAndArgumentHaveDifferentOwnerNameWillThrowError() {
-    String[] args = {"Anna", "This is important meeting", "12/10/2025", "9:30", "12/10/2025", "12:30", "-textFile", "/Users/dnnhhuy/Project/JavaProject/Java2025/apptbook/src/test/resources/edu/pdx/cs/joy/whitlock/example-apptbook.txt"};
+    String[] args = {"Anna", "This is important meeting", "12/10/2025", "9:30", "12/10/2025", "12:30", "-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/example-apptbook.txt"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), containsString("Input name in the argument is not the same as in the given text file.\n"));
   }
