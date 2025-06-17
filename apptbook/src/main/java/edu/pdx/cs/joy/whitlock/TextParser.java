@@ -6,6 +6,8 @@ import edu.pdx.cs.joy.ParserException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * A skeletal implementation of the <code>TextParser</code> class for Project 2.
@@ -24,14 +26,30 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
     ) {
 
       String owner = br.readLine();
-
       if (owner == null) {
         throw new ParserException("Missing owner");
       }
 
-      return new AppointmentBook(owner);
+      String[] checkOwner = owner.split(",");
+      if (checkOwner.length > 1 || owner.equals("")) {
+        throw new ParserException("Missing owner");
+      }
+      AppointmentBook book = new AppointmentBook(owner);
+      while (br.ready()) {
+        String line = br.readLine();
+        String[] data = line.split(",");
+        if (data.length != 3) {
+          throw new ParserException("Invalid text file format.");
+        }
+        String description = data[0].trim();
+        String beginTime = data[1].trim();
+        String endTime = data[2].trim();
+        book.addAppointment(new Appointment(description, beginTime, endTime));
 
-    } catch (IOException e) {
+      }
+      return book;
+
+    } catch (IOException | Appointment.InvalidAppointmentTimeException | Appointment.InvalidDateTimeFormatException e) {
       throw new ParserException("While parsing appointment book text", e);
     }
   }

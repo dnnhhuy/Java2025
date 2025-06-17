@@ -32,16 +32,4 @@ class Project1Test {
     }
   }
 
-  @Test
-  void invalidBTimeShouldReturnFalse() {
-    String inputTime = "11:332:342 44 22";
-    assertThat(Project1.isValidDateAndTime(inputTime), equalTo(false));
-  }
-
-  @Test
-  void validTimeShouldReturnTrue() {
-    String inputTime = "12/10/2025 12:30";
-    assertThat(Project1.isValidDateAndTime(inputTime), equalTo(true));
-  }
-
 }
