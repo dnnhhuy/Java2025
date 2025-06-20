@@ -2,8 +2,7 @@ package edu.pdx.cs.joy.whitlock;
 
 import edu.pdx.cs.joy.AbstractAppointmentBook;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * This class represents <code>AppointmentBook</code>
@@ -36,6 +35,7 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
       throw new NullAppointmentException("You are trying to adding null appointment!");
     }
     this.book.add(appt);
+    Collections.sort(this.book);
   }
 
   public static class NullAppointmentException extends RuntimeException {

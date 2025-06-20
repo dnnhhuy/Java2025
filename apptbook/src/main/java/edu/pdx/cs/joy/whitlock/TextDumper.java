@@ -22,7 +22,7 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
     ) {
       pw.println(book.getOwnerName());
       for (Appointment appt : book.getAppointments()) {
-        pw.println(appt.getDescription() + ", "+ appt.getBeginTimeString() + ", " + appt.getEndTimeString());
+        pw.println(appt.getDescription() + "; "+ appt.getBeginTimeString() + "; " + appt.getEndTimeString());
       }
       pw.flush();
     }

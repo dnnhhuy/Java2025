@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 /**
  * A skeletal implementation of the <code>TextParser</code> class for Project 2.
@@ -37,19 +38,22 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
       AppointmentBook book = new AppointmentBook(owner);
       while (br.ready()) {
         String line = br.readLine();
-        String[] data = line.split(",");
+        String[] data = line.split(";");
         if (data.length != 3) {
           throw new ParserException("Invalid text file format.");
         }
         String description = data[0].trim();
         String beginTime = data[1].trim();
         String endTime = data[2].trim();
-        book.addAppointment(new Appointment(description, beginTime, endTime));
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+        LocalDateTime begin = LocalDateTime.parse(beginTime, formatter);
+        LocalDateTime end = LocalDateTime.parse(endTime, formatter);
+        book.addAppointment(new Appointment(description, begin, end));
 
       }
       return book;
 
-    } catch (IOException | Appointment.InvalidAppointmentTimeException | Appointment.InvalidDateTimeFormatException e) {
+    } catch (IOException | Appointment.InvalidAppointmentTimeException e) {
       throw new ParserException("While parsing appointment book text", e);
     }
   }

@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -47,10 +46,12 @@ class Project1IT extends InvokeMainTestCase {
                     begin               When the appt begins (24-hour time)
                     end                 When the appt ends (24-hour time)
                   options are (options may appear in any order):
+                    -pretty file        Pretty print the appointment book to
+                                        a text file or standard out (file -)
                     -textFile File      Where to read/write the appointment book
                     -print              Prints a description of the new appointment
                     -README             Prints a README for this project and exits
-                  Date and time should be in the format: mm/dd/yyyy hh:mm
+                  Date and time should be in the format: M/d/yyyy h:mm a
                 """;
     assertThat(result.getTextWrittenToStandardOut(), equalTo(desiredMessage));
   }
@@ -84,7 +85,7 @@ class Project1IT extends InvokeMainTestCase {
 
   @Test
   void missingEndDateShouldThrowExceptionAndPrintAppropriateMessage() {
-    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30"};
+    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), equalTo("Missing appointment's end date argument\n"));
     assertThat(result.getTextWrittenToStandardOut(), equalTo(Project1.getDescriptionMessage()));
@@ -92,7 +93,7 @@ class Project1IT extends InvokeMainTestCase {
 
   @Test
   void missingEndTimeShouldThrowExceptionAndPrintAppropriateMessage() {
-    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "12/12/2025"};
+    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "PM", "12/12/2025"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), equalTo("Missing appointment's end time argument\n"));
     assertThat(result.getTextWrittenToStandardOut(), equalTo(Project1.getDescriptionMessage()));
@@ -100,21 +101,21 @@ class Project1IT extends InvokeMainTestCase {
 
   @Test
   void invalidBeginTimeShouldPrintErrorMessage() {
-    String[] args = {"David", "This is important meeting", "12/10/5", "12:30", "12/10/2025", "12:30"};
+    String[] args = {"David", "This is important meeting", "12/10/5", "12:30", "PM", "12/10/2025", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
-    assertThat(result.getTextWrittenToStandardError(), equalTo("Invalid input time. Time should be formatted as M/d/yyyy H:m\n"));
+    assertThat(result.getTextWrittenToStandardError(), equalTo("Invalid input time. Time should be formatted as M/d/yyyy H:mm a\n"));
   }
 
   @Test
   void invalidEndTimeShouldPrintErrorMessage() {
-    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "12/10/5", "12:30"};
+    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "PM",  "12/10/5", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
-    assertThat(result.getTextWrittenToStandardError(), equalTo("Invalid input time. Time should be formatted as M/d/yyyy H:m\n"));
+    assertThat(result.getTextWrittenToStandardError(), equalTo("Invalid input time. Time should be formatted as M/d/yyyy H:mm a\n"));
   }
 
   @Test
   void endTimeBeforebeginTimeShouldPrintErrorMessage() {
-    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "12/08/2025", "9:30"};
+    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "PM", "12/08/2025", "9:30", "AM"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), equalTo("Invalid Input. End date time must be after begin date time!\n"));
 
@@ -122,28 +123,28 @@ class Project1IT extends InvokeMainTestCase {
 
   @Test
   void successAddingAppointmentShouldPrintSuccessMessage() {
-    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "12/12/2025", "12:30", "-print"};
+    String[] args = {"-print", "David", "This is important meeting", "12/10/2025", "12:30", "PM", "12/12/2025", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is important meeting"));
   }
 
   @Test
   void inValidArgumentThrowsException() {
-    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "12/12/2025", "12:30", "-test"};
+    String[] args = {"-test", "David", "This is important meeting", "12/10/2025", "12:30", "12/12/2025", "12:30"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), equalTo("Unexpected Argument.\n"));
   }
 
   @Test
   void successPrintReadme() {
-    String[] args = {"David", "This is important meeting", "12/10/2025", "12:30", "12/12/2025", "12:30", "-README"};
+    String[] args = {"-README", "David", "This is important meeting", "12/10/2025", "12:30", "PM", "12/12/2025", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
   @Test
   void fileAndArgumentHaveDifferentOwnerNameWillThrowError() {
-    String[] args = {"Anna", "This is important meeting", "12/10/2025", "9:30", "12/10/2025", "12:30", "-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/example-apptbook.txt"};
+    String[] args = {"-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/example-apptbook.txt", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), containsString("Input name in the argument is not the same as in the given text file.\n"));
   }
@@ -151,21 +152,21 @@ class Project1IT extends InvokeMainTestCase {
 
   @Test
   void fileNotFoundShouldNotThrowExceptionButCreateFile(@TempDir File tempDir) {
-    String[] args = {"Anna", "This is important meeting", "12/10/2025", "9:30", "12/10/2025", "12:30", "-textFile", tempDir.getAbsolutePath() + "example-apptbook.txt"};
+    String[] args = {"-textFile", tempDir.getAbsolutePath() + "example-apptbook.txt", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), containsString(""));
   }
 
   @Test
   void invalidTextFileFormatShouldThrowException() {
-    String[] args = {"Anna", "This is important meeting", "12/10/2025", "9:30", "12/10/2025", "12:30", "-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/malformatted-apptbook.txt"};
+    String[] args = {"-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/malformatted-apptbook.txt", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), containsString("Invalid text file format."));
   }
 
   @Test
   void missingOwnerInTextFileShouldThrowException() {
-    String[] args = {"Anna", "This is important meeting", "12/10/2025", "9:30", "12/10/2025", "12:30", "-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/missingOwner-apptbook.txt"};
+    String[] args = {"-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/missingOwner-apptbook.txt", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), containsString("Missing owner"));
 
@@ -173,10 +174,50 @@ class Project1IT extends InvokeMainTestCase {
 
   @Test
   void emptyOwnerInTextFileShouldThrowException() {
-    String[] args = {"Anna", "This is important meeting", "12/10/2025", "9:30", "12/10/2025", "12:30", "-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/emptyOwner-apptbook.txt"};
+    String[] args = {"-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/emptyOwner-apptbook.txt", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
     MainMethodResult result = invokeMain(Project1.class, args);
     assertThat(result.getTextWrittenToStandardError(), containsString("Missing owner"));
+  }
 
+  @Test
+  void prettyPrintDashShouldOutputToTheStream() {
+    String[] args = {"-pretty", "-", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
+    String expectedOutput = """
+            Owner: Anna
+            Description: This is important meeting
+            Start at: 12/10/25, 9:30 AM
+            End at: 12/10/25, 12:30 PM
+            Duration: 0 days 3 hours 0 minutes 0 seconds
+            
+            """;
+    MainMethodResult result = invokeMain(Project1.class, args);
+    assertThat(result.getTextWrittenToStandardOut(), equalTo(expectedOutput));
+  }
+
+  @Test
+  void prettyPrintFileNameShouldOutputToAFile(@TempDir File tmpDir) throws IOException {
+    String[] args = {"-pretty", tmpDir.getAbsolutePath() + "prettyOut.txt", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
+    MainMethodResult result = invokeMain(Project1.class, args);
+    String expectedOutput = """
+            Owner: Anna
+            Description: This is important meeting
+            Start at: 12/10/25, 9:30 AM
+            End at: 12/10/25, 12:30 PM
+            Duration: 0 days 3 hours 0 minutes 0 seconds
+            
+            """;
+
+
+    FileReader reader = new FileReader(tmpDir.getAbsolutePath() + "prettyOut.txt");
+    BufferedReader br = new BufferedReader(reader);
+    StringBuilder readString = new StringBuilder();
+    while (br.ready()) {
+      String line = br.readLine();
+      readString.append(line);
+      readString.append("\n");
+
+    }
+    assertThat(readString.toString(), equalTo(expectedOutput));
   }
 
 }

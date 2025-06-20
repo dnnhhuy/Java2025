@@ -20,53 +20,74 @@ public class Project1 {
                     begin               When the appt begins (24-hour time)
                     end                 When the appt ends (24-hour time)
                   options are (options may appear in any order):
+                    -pretty file        Pretty print the appointment book to
+                                        a text file or standard out (file -)
                     -textFile File      Where to read/write the appointment book
                     -print              Prints a description of the new appointment
                     -README             Prints a README for this project and exits
-                  Date and time should be in the format: mm/dd/yyyy hh:mm
+                  Date and time should be in the format: M/d/yyyy h:mm a
                 """;
     }
 
     public static void main(String[] args) {
         if (args.length == 0) {
             System.err.println("Missing command line arguments");
+            System.out.print(getDescriptionMessage());
+            return;
+        }
+        boolean print = false;
+        boolean printReadme = false;
+        boolean textFile = false;
+        boolean prettyPrint = false;
+        String prettyPrintFilePath = "";
+        String filePath = "";
+        int i = 0;
+        while (args[i].charAt(0) == '-') {
+            if (args[i].equals("-print")) {
+                print = true;
+            } else if (args[i].equals("-README")) {
+                printReadme = true;
+            } else if (args[i].equals("-textFile")){
+                textFile = true;
+                filePath = args[++i];
+            } else if (args[i].equals("-pretty")) {
+                prettyPrint = true;
+                prettyPrintFilePath = args[++i];
+            } else {
+                System.err.println("Unexpected Argument.");
+                return;
+            }
+            i++;
+        }
+
+        if (args.length == i) {
+            System.err.println("Missing command line arguments");
             System.out.print(getDescriptionMessage() );
-        } else if (args.length == 1){
+        } else if (args.length == (i + 1)){
             System.err.println("Missing description argument");
             System.out.print(getDescriptionMessage());
-        } else if (args.length == 2) {
+        } else if (args.length == (i + 2)) {
             System.err.println("Missing appointment's begin date argument");
             System.out.print(getDescriptionMessage());
-        } else if (args.length == 3) {
+        } else if (args.length == (i + 3)) {
             System.err.println("Missing appointment's begin time argument");
             System.out.print(getDescriptionMessage());
-        } else if (args.length == 4) {
+        } else if (args.length == (i + 4)) {
+            System.err.println("Missing appointment's begin time AM/PM argument");
+            System.out.print(getDescriptionMessage());
+        }else if (args.length == (i + 5)) {
             System.err.println("Missing appointment's end date argument");
             System.out.print(getDescriptionMessage());
-        } else if (args.length == 5) {
+        } else if (args.length == (i + 6)) {
             System.err.println("Missing appointment's end time argument");
             System.out.print(getDescriptionMessage());
+        }else if (args.length == (i + 7)) {
+            System.err.println("Missing appointment's end time AM/PM argument");
+            System.out.print(getDescriptionMessage());
         }else {
-            String owner = args[0];
-            String description = args[1];
-            boolean print = false;
-            boolean printReadme = false;
-            boolean textFile = false;
-            String filePath = "";
-            for (int i = 6; i < args.length; i++) {
-                if (args[i].equals("-print")) {
-                    print = true;
-                } else if (args[i].equals("-README")) {
-                    printReadme = true;
-                } else if (args[i].equals("-textFile")){
-                    textFile = true;
-                    filePath = args[i + 1];
-                    i++;
-                } else {
-                    System.err.println("Unexpected Argument.");
-                    return;
-                }
-            }
+            String owner = args[i];
+            String description = args[i+1];
+
 
             AppointmentBook appointmentBook = null;
             if (textFile) {
@@ -96,8 +117,8 @@ public class Project1 {
                     return;
                 }
             }
-            String beginDateTime = args[2] + " " + args[3];
-            String endDateTime = args[4] + " " + args[5];
+            String beginDateTime = args[i+2] + " " + args[i+3] + " " + args[i+4];
+            String endDateTime = args[i+5] + " " + args[i+6] + " " +  args[i+7];
 
             Appointment appointment = null;
             try {
@@ -136,8 +157,33 @@ public class Project1 {
                     textDumper.dump(appointmentBook);
                 } catch (IOException e) {
                     System.err.println("Something went wrong");
+                    return;
                 }
+            }
 
+            if (prettyPrint) {
+                if (prettyPrintFilePath.equals("-")) {
+                    StringWriter stringWriter = new StringWriter();
+                    PrettyPrinter prettyPrinter = new PrettyPrinter(stringWriter);
+                    prettyPrinter.dump(appointmentBook);
+                    System.out.print(stringWriter);
+                } else {
+                    File file = new File(prettyPrintFilePath);
+                    if (!file.exists()) {
+                        try {
+                            file.createNewFile();
+                        } catch (IOException e) {
+                            System.err.println("Error when trying to create file");
+                            return;
+                        }
+                    }
+                    try (FileWriter fileWriter = new FileWriter(file)) {
+                        PrettyPrinter prettyPrinter = new PrettyPrinter(fileWriter);
+                        prettyPrinter.dump(appointmentBook);
+                    } catch (IOException e) {
+                        System.err.println("Error when creating fileWriter");
+                    }
+                }
             }
         }
     }

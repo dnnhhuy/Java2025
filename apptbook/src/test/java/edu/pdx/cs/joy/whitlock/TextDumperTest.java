@@ -60,10 +60,10 @@ public class TextDumperTest {
     String owner = "David";
     AppointmentBook book = new AppointmentBook(owner);
 
-    book.addAppointment(new Appointment("I love this meeting", "10/12/2025 9:30", "10/12/2025 12:30"));
-    book.addAppointment(new Appointment("I love this meeting", "10/12/2025 10:30", "10/12/2025 12:30"));
-    book.addAppointment(new Appointment("I love this meeting", "10/12/2025 10:30", "10/12/2025 12:30"));
-    book.addAppointment(new Appointment("I love this meeting", "10/12/2025 10:30", "10/12/2025 12:30"));
+    book.addAppointment(new Appointment("I love this meeting", "10/12/2025 9:30 AM", "10/12/2025 12:30 PM"));
+    book.addAppointment(new Appointment("I love this meeting", "10/12/2025 10:30 AM", "10/12/2025 12:30 PM"));
+    book.addAppointment(new Appointment("I love this meeting", "10/12/2025 10:30 AM", "10/12/2025 12:30 PM"));
+    book.addAppointment(new Appointment("I love this meeting", "10/12/2025 10:30 AM", "10/12/2025 12:30 PM"));
 
     File textFile = new File(tempDir, "apptbook.txt");
     TextDumper textDumper = new TextDumper(new FileWriter(textFile));
