@@ -20,6 +20,7 @@ public class Project1 {
                     begin               When the appt begins (24-hour time)
                     end                 When the appt ends (24-hour time)
                   options are (options may appear in any order):
+                    -xmlFile file       Where to read/write the airline info
                     -pretty file        Pretty print the appointment book to
                                         a text file or standard out (file -)
                     -textFile File      Where to read/write the appointment book
@@ -39,6 +40,7 @@ public class Project1 {
         boolean printReadme = false;
         boolean textFile = false;
         boolean prettyPrint = false;
+        boolean xmlFile = false;
         String prettyPrintFilePath = "";
         String filePath = "";
         int i = 0;
@@ -48,11 +50,22 @@ public class Project1 {
             } else if (args[i].equals("-README")) {
                 printReadme = true;
             } else if (args[i].equals("-textFile")){
+                if (xmlFile) {
+                    System.err.println("Cannot use xmlFile and textFile arguments at the same time!");
+                    return;
+                }
                 textFile = true;
                 filePath = args[++i];
             } else if (args[i].equals("-pretty")) {
                 prettyPrint = true;
                 prettyPrintFilePath = args[++i];
+            } else if (args[i].equals("-xmlFile")) {
+              if (textFile) {
+                  System.err.println("Cannot use xmlFile and textFile arguments at the same time!");
+                  return;
+              }
+              xmlFile = true;
+              filePath = args[++i];
             } else {
                 System.err.println("Unexpected Argument.");
                 return;
@@ -117,6 +130,38 @@ public class Project1 {
                     return;
                 }
             }
+
+            if (xmlFile) {
+                File inputFile = new File(filePath);
+                try {
+                    boolean createdFile = inputFile.createNewFile();
+                    if (createdFile) {
+                        System.out.println("File created!");
+                    }
+                    else {
+                        XmlParser xmlParser;
+                        try {
+                            xmlParser = new XmlParser(new FileInputStream(inputFile));
+                            appointmentBook = xmlParser.parse();
+                        } catch (FileNotFoundException ex) {
+                            System.err.println("Something wrong");
+                            return;
+                        } catch (ParserException e) {
+                            System.err.println(e.getMessage());
+                            return;
+                        }
+
+                        if (!appointmentBook.getOwnerName().equals(owner)) {
+                            System.err.println("Input name in the argument is not the same as in the given text file.");
+                            return;
+                        }
+                    }
+                } catch (IOException e) {
+                    System.err.println("Cannot create file");
+                    return;
+                }
+            }
+
             String beginDateTime = args[i+2] + " " + args[i+3] + " " + args[i+4];
             String endDateTime = args[i+5] + " " + args[i+6] + " " +  args[i+7];
 
@@ -183,6 +228,15 @@ public class Project1 {
                     } catch (IOException e) {
                         System.err.println("Error when creating fileWriter");
                     }
+                }
+            }
+
+            if (xmlFile) {
+                try {
+                    TextDumper textDumper = new TextDumper(new FileWriter(filePath));
+                    textDumper.dump(appointmentBook);
+                } catch (IOException e) {
+                    System.err.println("Something went wrong");
                 }
             }
         }

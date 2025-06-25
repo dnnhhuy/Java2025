@@ -46,6 +46,7 @@ class Project1IT extends InvokeMainTestCase {
                     begin               When the appt begins (24-hour time)
                     end                 When the appt ends (24-hour time)
                   options are (options may appear in any order):
+                    -xmlFile file       Where to read/write the airline info
                     -pretty file        Pretty print the appointment book to
                                         a text file or standard out (file -)
                     -textFile File      Where to read/write the appointment book
@@ -219,5 +220,57 @@ class Project1IT extends InvokeMainTestCase {
     }
     assertThat(readString.toString(), equalTo(expectedOutput));
   }
+
+  @Test
+  void xmlFileAndArgumentHaveDifferentOwnerNameWillThrowError() {
+    String[] args = {"-xmlFile", "src/test/resources/edu/pdx/cs/joy/whitlock/valid-apptbook.xml", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
+    MainMethodResult result = invokeMain(Project1.class, args);
+    assertThat(result.getTextWrittenToStandardError(), containsString("Input name in the argument is not the same as in the given text file.\n"));
+  }
+
+
+  @Test
+  void xmlFileNotFoundShouldNotThrowExceptionButCreateFile(@TempDir File tempDir) {
+    String[] args = {"-xmlFile", tempDir.getAbsolutePath() + "example-apptbook.xml", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
+    MainMethodResult result = invokeMain(Project1.class, args);
+    assertThat(result.getTextWrittenToStandardOut(), containsString("File created!"));
+  }
+
+  @Test
+  void xmlInvalidTextFileFormatShouldThrowException() {
+    String[] args = {"-xmlFile", "src/test/resources/edu/pdx/cs/joy/whitlock/invalid-apptbook.xml", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
+    MainMethodResult result = invokeMain(Project1.class, args);
+    assertThat(result.getTextWrittenToStandardError(), containsString("Error while parsing:"));
+  }
+
+  @Test
+  void missingOwnerInXmlTextFileShouldThrowException() {
+    String[] args = {"-xmlFile", "src/test/resources/edu/pdx/cs/joy/whitlock/missingOwner-apptbook.xml", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
+    MainMethodResult result = invokeMain(Project1.class, args);
+    assertThat(result.getTextWrittenToStandardError(), containsString("Error while parsing:"));
+
+  }
+
+  @Test
+  void emptyOwnerInXmlTextFileShouldThrowException() {
+    String[] args = {"-xmlFile", "src/test/resources/edu/pdx/cs/joy/whitlock/emptyOwner-apptbook.xml", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
+    MainMethodResult result = invokeMain(Project1.class, args);
+    assertThat(result.getTextWrittenToStandardError(), containsString("Missing Owner"));
+  }
+
+  @Test
+  void useXmlTextFileAndTextFileShouldThrowError() {
+    String[] args = {"-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/emptyOwner-apptbook.txt",  "-xmlFile", "src/test/resources/edu/pdx/cs/joy/whitlock/emptyOwner-apptbook.xml", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
+    MainMethodResult result = invokeMain(Project1.class, args);
+    assertThat(result.getTextWrittenToStandardError(), containsString("Cannot use xmlFile and textFile arguments at the same time!"));
+  }
+
+  @Test
+  void useXmlTextFileAndTextFileShouldThrowError2() {
+    String[] args = {"-xmlFile", "src/test/resources/edu/pdx/cs/joy/whitlock/emptyOwner-apptbook.xml", "-textFile", "src/test/resources/edu/pdx/cs/joy/whitlock/emptyOwner-apptbook.txt", "Anna", "This is important meeting", "12/10/2025", "9:30", "AM", "12/10/2025", "12:30", "PM"};
+    MainMethodResult result = invokeMain(Project1.class, args);
+    assertThat(result.getTextWrittenToStandardError(), containsString("Cannot use xmlFile and textFile arguments at the same time!"));
+  }
+
 
 }

@@ -26,7 +26,6 @@ class AppointmentBookXmlHelperTest {
       factory.newDocumentBuilder();
     builder.setErrorHandler(helper);
     builder.setEntityResolver(helper);
-
     builder.parse(this.getClass().getResourceAsStream("valid-apptbook.xml"));
   }
 
