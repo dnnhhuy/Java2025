@@ -19,45 +19,45 @@ public class AboutDates {
 
     @Koan
     public void dateToString() {
-        assertEquals(date.toString(), __);
+        assertEquals(date.toString(), "1973-03-03T20:33:21");
     }
 
     @Koan
     public void changingDateValue() {
         date = date.plusHours(1);
-        assertEquals(date.toString(), __);
+        assertEquals(date.toString(), "1973-03-03T21:33:21");
     }
 
     @Koan
     public void usingPlusToChangeDatesDoesntWrapOtherFields() {
         date = date.plusMonths(12);
-        assertEquals(date.toString(), __);
+        assertEquals(date.toString(), "1974-03-03T21:33:21");
     }
 
     @Koan
     public void usingDateTimeFormatterToFormatDate() {
         String formattedDate = DateTimeFormatter.ISO_DATE.format(date);
-        assertEquals(formattedDate, __);
+        assertEquals(formattedDate, "1974-03-03");
     }
 
     @Koan
     public void usingDateTimeFormatterToFormatDateShort() {
         String formattedDate = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).format(date);
-        assertEquals(formattedDate, __);
+        assertEquals(formattedDate, "3/3/74, 9:33 PM");
     }
 
     @Koan
     public void usingDateTimeFormatterToFormatDateFull() {
         String formattedDate = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(date);
         // There is also FormatStyle.LONG and FormatStyle.FULL... you get the idea ;-)
-        assertEquals(formattedDate, __);
+        assertEquals(formattedDate, "Mar 3, 1974, 9:33:21 PM");
     }
 
     @Koan
     public void usingDateTimeFormatterToParseDates() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
         LocalDate date2 = LocalDate.parse("01-01-2000", formatter);
-        assertEquals(date2.toString(), __);
+        assertEquals(date2.toString(), "2000-01-01");
         // What happened to the time? What do you need to change to keep the time as well?
     }
 }

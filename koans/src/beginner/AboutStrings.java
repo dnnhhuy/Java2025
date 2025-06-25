@@ -2,7 +2,6 @@ package beginner;
 
 import com.sandwich.koan.Koan;
 
-import javax.naming.InsufficientResourcesException;
 import java.text.MessageFormat;
 import java.util.MissingFormatArgumentException;
 

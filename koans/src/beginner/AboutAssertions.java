@@ -34,7 +34,7 @@ public class AboutAssertions {
     @Koan
     public void assertNotNullObject() {
         // but what when there should not be a null value?
-        assertNotNull("Hello");
+        assertNotNull(new Object());
     }
 
     @Koan
@@ -75,12 +75,12 @@ public class AboutAssertions {
     @Koan
     public void assertNotSameInstance() {
         Integer original = new Integer(1);
-        Integer same = new Integer(1);
+        Integer same = original;
         Integer different = new Integer(1);
         // These are both equal to the original...
         assertEquals(original, same);
         assertEquals(original, different);
         // ...but only one of them refers to a different instance.
-        assertNotSame(original, same);  // We want equal, but _not_ the same.
+        assertNotSame(original, different);  // We want equal, but _not_ the same.
     }
 }
