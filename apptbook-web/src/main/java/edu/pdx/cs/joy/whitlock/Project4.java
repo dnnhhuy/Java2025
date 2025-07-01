@@ -25,7 +25,7 @@ public class Project4 {
         Boolean search = false;
         Boolean print = false;
         Boolean printReadme = false;
-        while (args[i].startsWith("-")) {
+        while (i < args.length && args[i].startsWith("-")) {
             if (args[i].equals("-host")) {
                 hostName = args[++i];
             } else if (args[i].equals("-port")) {
