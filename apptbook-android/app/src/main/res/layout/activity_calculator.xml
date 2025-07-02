@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:textAlignment="center"
     tools:context=".CalculatorActivity">
 
     <TextView
@@ -37,19 +38,48 @@
         android:layout_width="409dp"
         android:layout_height="172dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/button2"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
         tools:layout_editor_absoluteY="207dp">
 
         <EditText
-            android:id="@+id/editTextNumber"
+            android:id="@+id/leftOperand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/sum"
+            android:layout_width="19dp"
+            android:layout_height="wrap_content"
+            android:text="+" />
+
+        <EditText
+            android:id="@+id/rightOperand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number"
+            android:textAlignment="center" />
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:onClick="computeSum"
+            android:text="@string/equals" />
+
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
