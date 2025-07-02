@@ -61,5 +61,8 @@ public class CalculatorActivity extends AppCompatActivity {
         this.sum = sumValue;
         TextView viewById = findViewById(R.id.result);
         viewById.setText(String.valueOf(sumValue));
+
+        Appointment appointment = new Appointment(sumValue);
+        Toast.makeText(this, appointment.toString(), Toast.LENGTH_LONG).show();
     }
 }
