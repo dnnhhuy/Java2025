@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">AppointmentBook</string>
     <string name="hello_class">Hello Class!</string>
-    <string name="click_me">Click Me</string>
+    <string name="launch_calculator">Launch Calculator</string>
 </resources>
