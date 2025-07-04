@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppointmentBook">
         <activity
-            android:name=".CalculatorActivity"
+            android:name=".DetailedAppointmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppointmentActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -7,37 +7,116 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/createAppointmentBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_class"
+        android:layout_marginBottom="168dp"
+        android:onClick="createAppointment"
+        android:text="@string/create_appointment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView"
-        app:layout_constraintVertical_bias="0.535" />
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/searchBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="launchCalculator"
-        android:text="@string/launch_calculator"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
+        android:layout_marginTop="44dp"
+        android:onClick="searchAppointmentBook"
+        android:text="@string/search_appointment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createAppointmentBtn" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="414dp"
+        android:layout_height="445dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/createAppointmentBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.549" />
+        app:layout_constraintVertical_bias="0.575">
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="394dp"
-        android:layout_height="296dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        <TextView
+            android:id="@+id/ownerField"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/owner" />
+
+        <EditText
+            android:id="@+id/editOwner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/owner_s_name"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:id="@+id/descriptionField"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginTop="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/description" />
+
+        <EditText
+            android:id="@+id/editDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Input Description"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:id="@+id/beginField"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginTop="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/begin_time" />
+
+        <EditText
+            android:id="@+id/editBegin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Input begin time"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:id="@+id/endField"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginTop="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/end_time" />
+
+        <EditText
+            android:id="@+id/editEnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Input end time"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

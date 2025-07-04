@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">AppointmentBook</string>
     <string name="hello_class">Hello Class!</string>
-    <string name="launch_calculator">Launch Calculator</string>
+    <string name="create_appointment">Create Appointment</string>
     <string name="equals">=</string>
+    <string name="end_time">End Time:</string>
+    <string name="begin_time">Begin Time:</string>
+    <string name="description">Description:</string>
+    <string name="owner">Owner:</string>
+    <string name="owner_s_name">Owner\'s name</string>
+    <string name="search_appointment">Search Appointment</string>
+    <string name="back_to_main">Back to Main</string>
 </resources>
